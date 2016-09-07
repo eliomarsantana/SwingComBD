@@ -1,0 +1,133 @@
+-- MySQL Administrator dump 1.4
+--
+-- ------------------------------------------------------
+-- Server version	6.0.6-alpha-community
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+--
+-- Create schema swingbd
+--
+
+CREATE DATABASE IF NOT EXISTS swingbd;
+USE swingbd;
+
+--
+-- Definition of table `cidades`
+--
+
+DROP TABLE IF EXISTS `cidades`;
+CREATE TABLE `cidades` (
+  `cidade_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  PRIMARY KEY (`cidade_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cidades`
+--
+
+/*!40000 ALTER TABLE `cidades` DISABLE KEYS */;
+INSERT INTO `cidades` (`cidade_id`,`nome`) VALUES 
+ (1,'Salvador'),
+ (2,'Santo Amaro'),
+ (3,'Feira de Santana'),
+ (4,'Cachoeira'),
+ (5,'São Francisco do conde'),
+ (6,'Caculé');
+/*!40000 ALTER TABLE `cidades` ENABLE KEYS */;
+
+
+--
+-- Definition of table `curticoes`
+--
+
+DROP TABLE IF EXISTS `curticoes`;
+CREATE TABLE `curticoes` (
+  `curticao_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `descricao` varchar(45) NOT NULL,
+  PRIMARY KEY (`curticao_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `curticoes`
+--
+
+/*!40000 ALTER TABLE `curticoes` DISABLE KEYS */;
+INSERT INTO `curticoes` (`curticao_id`,`descricao`) VALUES 
+ (1,'Esporte'),
+ (2,'Cinema'),
+ (3,'Balada'),
+ (4,'Estudar');
+/*!40000 ALTER TABLE `curticoes` ENABLE KEYS */;
+
+
+--
+-- Definition of table `pessoas`
+--
+
+DROP TABLE IF EXISTS `pessoas`;
+CREATE TABLE `pessoas` (
+  `pessoa_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `sexo` decimal(10,0) NOT NULL COMMENT '0 - Masc 1 - Fem',
+  `cidade_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`pessoa_id`),
+  KEY `FK_pessoas_cidade` (`cidade_id`),
+  CONSTRAINT `FK_pessoas_cidade` FOREIGN KEY (`cidade_id`) REFERENCES `cidades` (`cidade_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pessoas`
+--
+
+/*!40000 ALTER TABLE `pessoas` DISABLE KEYS */;
+INSERT INTO `pessoas` (`pessoa_id`,`nome`,`telefone`,`sexo`,`cidade_id`) VALUES 
+ (4,'Priscilla Cláudia Carvalho de Oliveira','(71)3378-7362','0',1);
+/*!40000 ALTER TABLE `pessoas` ENABLE KEYS */;
+
+
+--
+-- Definition of table `pessoas_curticoes`
+--
+
+DROP TABLE IF EXISTS `pessoas_curticoes`;
+CREATE TABLE `pessoas_curticoes` (
+  `pessoa_id` int(10) unsigned NOT NULL DEFAULT '1',
+  `curticao_id` int(10) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`pessoa_id`,`curticao_id`),
+  KEY `FK_pessoas_curticoes_curticoes` (`curticao_id`),
+  CONSTRAINT `FK_pessoas_curticoes_curticoes` FOREIGN KEY (`curticao_id`) REFERENCES `curticoes` (`curticao_id`),
+  CONSTRAINT `FK_pessoas_curticoes_pessoas` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoas` (`pessoa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pessoas_curticoes`
+--
+
+/*!40000 ALTER TABLE `pessoas_curticoes` DISABLE KEYS */;
+INSERT INTO `pessoas_curticoes` (`pessoa_id`,`curticao_id`) VALUES 
+ (4,2),
+ (4,3);
+/*!40000 ALTER TABLE `pessoas_curticoes` ENABLE KEYS */;
+
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
